@@ -25,9 +25,9 @@ jobs:
         REGISTRY_REPO: registry.hub.docker.com/dockerdig/hello-world
         REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
         REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
-}:actions
-      env:
-        REGISTRY_ENDPOINT: registry.hub.docker.com
-        REGISTRY_REPO: registry.hub.docker.com/dockerdig/hello-world
-        REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
-        REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
+
+
+
+
+
+
