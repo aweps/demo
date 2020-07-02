@@ -1,3 +1,4 @@
+---
 kind: pipeline
 name: master
 
@@ -19,7 +20,7 @@ steps:
   - docker push ${REGISTRY_REPO}
   environment:
     REGISTRY_ENDPOINT: registry.hub.docker.com
-    REGISTRY_REPO: nclans/demo
+    REGISTRY_REPO: sample/hello-world
     REGISTRY_USERNAME:
       from_secret: REGISTRY_USERNAME
     REGISTRY_PASSWORD:
@@ -37,3 +38,4 @@ trigger:
   branch:
   - master
 
+---
