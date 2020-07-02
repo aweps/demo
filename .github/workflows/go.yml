@@ -1,0 +1,30 @@
+name: Docker
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: docker
+      uses: docker://docker
+      with:
+        args: |
+          docker login ${REGISTRY_ENDPOINT} --username ${REGISTRY_USERNAME} --password ${REGISTRY_PASSWORD}
+          docker build --rm=true --pull=true -t ${REGISTRY_ENDPOINT}/${REGISTRY_REPO} -f Dockerfile .
+          docker push ${REGISTRY_ENDPOINT}/${REGISTRY_REPO}:actions
+      env:
+        REGISTRY_ENDPOINT: registry.hub.docker.com
+        REGISTRY_REPO: registry.hub.docker.com/dockerdig/hello-world
+        REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
+        REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
