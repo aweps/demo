@@ -1,4 +1,3 @@
----
 kind: pipeline
 name: master
 
@@ -15,12 +14,12 @@ steps:
   pull: if-not-exists
   image: docker
   commands:
-  - docker login ${REGISTRY_ENDPOINT} --username ${REGISTRY_USERNAME} --password ${REGISTRY_PASSWORD}
-  - docker build --rm=true --pull=true -t ${REGISTRY_REPO} -f Dockerfile ./
-  - docker push ${REGISTRY_REPO}
+  - docker login $${REGISTRY_ENDPOINT} --username $${REGISTRY_USERNAME} --password $${REGISTRY_PASSWORD}
+  - docker build --rm=true --pull=true -t $${REGISTRY_REPO} -f Dockerfile ./
+  - docker push $${REGISTRY_REPO}
   environment:
     REGISTRY_ENDPOINT: registry.hub.docker.com
-    REGISTRY_REPO: sample/hello-world
+    REGISTRY_REPO: dockerdig/hello-world
     REGISTRY_USERNAME:
       from_secret: REGISTRY_USERNAME
     REGISTRY_PASSWORD:
@@ -38,4 +37,3 @@ trigger:
   branch:
   - master
 
----
