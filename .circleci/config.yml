@@ -2,7 +2,7 @@ version: 2.1
 jobs:
   build_docker:
     docker:
-      - image: circleci/golang:1.13-alpine
+      - image: docker
     environment:
       REGISTRY_ENDPOINT: registry.hub.docker.com
       REGISTRY_REPO: dockerdig/hello-world
