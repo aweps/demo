@@ -14,4 +14,3 @@ COPY hello.md /root/hugo/content/posts/hello.md
 
 WORKDIR /root/hugo
 ENTRYPOINT ["/usr/bin/hugo","server", "--bind", "0.0.0.0"]
-"]
