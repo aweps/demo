@@ -25,11 +25,12 @@ jobs:
   build_hugo:
     docker:
       - image: ${REGISTRY_ENDPOINT}/${REGISTRY_REPO}:circleci
-    working_directory: ~/hugo
+    working_directory: /srv/hugo
     environment:
       REGISTRY_ENDPOINT: registry.hub.docker.com
       REGISTRY_REPO: dockerdig/hello-world
-      HUGO_BUILD_DIR: ~/hugo/public
+      HUGO_BUILD_DIR: /srv/hugo/public
+      AWS_TARGET_SITE: my-site
       DEBIAN_FRONTEND: noninteractive
     steps:
 
@@ -37,7 +38,7 @@ jobs:
           name: install AWS CLI & html proofer
           command: |
             apt-get update && apt-get install -y awscli
-            apt-get install -y build-essential patch ruby-dev zlib1g-dev liblzma-dev libgmp-dev libxslt-dev libxml2-dev
+            apt-get install -y build-essential patch ruby-dev zlib1g-dev liblzma-dev libgmp-dev libxslt-dev libxml2-dev curl
             gem install pkg-config
             gem install nokogiri -- --use-system-libraries
             gem install html-proofer
