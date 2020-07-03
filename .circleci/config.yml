@@ -1,0 +1,66 @@
+version: 2.1
+jobs:
+  build_docker:
+    docker:
+      - image: circleci/golang:1.13-alpine
+    environment:
+      REGISTRY_ENDPOINT: registry.hub.docker.com
+      REGISTRY_REPO: dockerdig/hello-world
+    steps:
+
+      # checkout the repository
+      - checkout
+      # ... steps for building/testing app ...
+
+      - setup_remote_docker:
+          docker_layer_caching: true
+
+      # build and push Docker image
+      - run: |
+          docker login ${REGISTRY_ENDPOINT} --username ${REGISTRY_USERNAME} --password ${REGISTRY_PASSWORD}
+          docker build --rm=true --pull=true -t ${REGISTRY_ENDPOINT}/${REGISTRY_REPO} -f Dockerfile ./
+          docker tag ${REGISTRY_ENDPOINT}/${REGISTRY_REPO} ${REGISTRY_ENDPOINT}/${REGISTRY_REPO}:circleci
+          docker push ${REGISTRY_ENDPOINT}/${REGISTRY_REPO}:circleci
+
+  build_hugo:
+    docker:
+      - image: ${REGISTRY_ENDPOINT}/${REGISTRY_REPO}:circleci
+    working_directory: ~/hugo
+    environment:
+      REGISTRY_ENDPOINT: registry.hub.docker.com
+      REGISTRY_REPO: dockerdig/hello-world
+      HUGO_BUILD_DIR: ~/hugo/public
+    steps:
+
+      - run:
+          name: install AWS CLI (first install pip, the Python package manager)
+          command: |
+            apk update && apk add --update python python-dev py-pip build-base
+            pip install awscli
+
+      # build with Hugo
+      - run: HUGO_ENV=production hugo -v -d $HUGO_BUILD_DIR
+
+      - run:
+          name: test our generated HTML files
+          command: |
+            htmlproofer $HUGO_BUILD_DIR --allow-hash-href --check-html \
+            --empty-alt-ignore --disable-external
+
+      # `deploy` step: identical to a `run` step, but uses only one container:
+      # /docs/2.0/configuration-reference/#deploy
+      - deploy:
+          name: deploy to AWS
+          command: |
+            if [ "${CIRCLE_BRANCH}" = "master" ]; then
+              aws s3 sync $HUGO_BUILD_DIR s3://$AWS_TARGET_SITE --delete
+            else
+              echo "Not master branch, dry run only"
+            fi
+
+workflows:
+  version: 2.1
+  hugo_and_docker:
+    jobs:
+      - build_hugo
+      - build_docker
