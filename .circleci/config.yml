@@ -1,7 +1,7 @@
 version: 2.1
+context: demo
 jobs:
   build_docker:
-    context: demo
     docker:
       - image: docker
     environment:
