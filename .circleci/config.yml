@@ -30,6 +30,7 @@ jobs:
       REGISTRY_ENDPOINT: registry.hub.docker.com
       REGISTRY_REPO: dockerdig/hello-world
       HUGO_BUILD_DIR: ~/hugo/public
+      DEBIAN_FRONTEND: noninteractive
     steps:
 
       - run:
