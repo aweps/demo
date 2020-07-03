@@ -1,5 +1,4 @@
 version: 2.1
-context: demo
 jobs:
   build_docker:
     docker:
@@ -23,3 +22,9 @@ jobs:
           docker tag ${REGISTRY_ENDPOINT}/${REGISTRY_REPO} ${REGISTRY_ENDPOINT}/${REGISTRY_REPO}:circleci
           docker push ${REGISTRY_ENDPOINT}/${REGISTRY_REPO}:circleci
 
+workflows:
+  version: 2.1
+  hugo_and_docker:
+    jobs:
+      - build_docker:
+          context: demo
