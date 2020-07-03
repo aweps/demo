@@ -66,3 +66,5 @@ workflows:
           context: demo
       - build_hugo:
           context: demo
+          requires:
+            - build_docker
