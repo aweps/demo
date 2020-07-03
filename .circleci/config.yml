@@ -1,6 +1,7 @@
 version: 2.1
 jobs:
   build_docker:
+    context: demo
     docker:
       - image: docker
     environment:
@@ -22,54 +23,3 @@ jobs:
           docker tag ${REGISTRY_ENDPOINT}/${REGISTRY_REPO} ${REGISTRY_ENDPOINT}/${REGISTRY_REPO}:circleci
           docker push ${REGISTRY_ENDPOINT}/${REGISTRY_REPO}:circleci
 
-  build_hugo:
-    docker:
-      - image: ${REGISTRY_ENDPOINT}/${REGISTRY_REPO}:circleci
-    working_directory: /srv/hugo
-    environment:
-      REGISTRY_ENDPOINT: registry.hub.docker.com
-      REGISTRY_REPO: dockerdig/hello-world
-      HUGO_BUILD_DIR: /srv/hugo/public
-      AWS_TARGET_SITE: my-site
-      DEBIAN_FRONTEND: noninteractive
-    steps:
-
-      - run:
-          name: install AWS CLI & html proofer
-          command: |
-            apt-get update && apt-get install -y awscli
-            apt-get install -y build-essential patch ruby-dev zlib1g-dev liblzma-dev libgmp-dev libxslt-dev libxml2-dev curl
-            gem install pkg-config
-            gem install nokogiri -- --use-system-libraries
-            gem install html-proofer
-
-      # build with Hugo
-      - run: HUGO_ENV=production hugo -v -d $HUGO_BUILD_DIR
-
-      - run:
-          name: test our generated HTML files
-          command: |
-            htmlproofer $HUGO_BUILD_DIR --allow-hash-href --check-html \
-            --empty-alt-ignore --disable-external
-
-      # `deploy` step: identical to a `run` step, but uses only one container:
-      # /docs/2.0/configuration-reference/#deploy
-      - deploy:
-          name: deploy to AWS
-          command: |
-            if [ "${CIRCLE_BRANCH}" = "master" ]; then
-              aws s3 sync $HUGO_BUILD_DIR s3://$AWS_TARGET_SITE --delete
-            else
-              echo "Not master branch, dry run only"
-            fi
-
-workflows:
-  version: 2.1
-  hugo_and_docker:
-    jobs:
-      - build_docker:
-          context: demo
-      - build_hugo:
-          context: demo
-          requires:
-            - build_docker
