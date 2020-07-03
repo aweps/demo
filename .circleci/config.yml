@@ -62,5 +62,7 @@ workflows:
   version: 2.1
   hugo_and_docker:
     jobs:
-      - build_docker
-      - build_hugo
+      - build_docker:
+          context: demo
+      - build_hugo:
+          context: demo
