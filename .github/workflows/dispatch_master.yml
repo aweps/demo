@@ -24,12 +24,12 @@ jobs:
 
     - name: Run a one-line script
       run: |
-        curl --request POST \
+        curl -vs --request POST \
         --url https://api.github.com/repos/slaystack/xops/issues \
         --header 'authorization: token ${PA_TOKEN}' \
         --header 'content-type: application/json' \
         --data '{
-          "event_type": "${{ github.event }}",
+          "event_type": "${{ github.event.type }}",
           "client_payload": {
             "app" : "demo",
             "dependency" : "demo",
@@ -40,10 +40,6 @@ jobs:
           }'
       env:
         PA_TOKEN: ${{ secrets.PA_TOKEN }}
-
-
-
-
 
 
 
