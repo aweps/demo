@@ -25,17 +25,19 @@ jobs:
     - name: Run a one-line script
       run: |
         curl -vs --request POST \
-        --url https://api.github.com/repos/slaystack/xops/issues \
-        --header 'authorization: token ${PA_TOKEN}' \
+        --url https://api.github.com/repos/slaystack/xops/dispatches \
+        --header "authorization: token ${PA_TOKEN}" \
+        --header 'Accept: application/vnd.github.everest-preview+json' \
         --header 'content-type: application/json' \
         --data '{
-          "event_type": "${{ github.event.type }}",
+          "event_type": "ops_update",
           "client_payload": {
             "app" : "demo",
             "dependency" : "demo",
             "repo" : "${{ github.repository }}",
             "branch" : "${{ github.ref }}",
-            "commit" : "${{ github.sha }}"
+            "commit" : "${{ github.sha }}",
+            "event": "${{ github.event }}"
             }
           }'
       env:
