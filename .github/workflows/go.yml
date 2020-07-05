@@ -26,8 +26,25 @@ jobs:
         REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
         REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
 
+  dispatch:
+    needs: build
+    strategy:
+      matrix:
+        repo: ['slaystack/xops']
 
+    name: Dispatch
+    runs-on: ubuntu-latest
+    steps:
 
-
-
+      - name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v1
+        with:
+          token: ${{ secrets.PA_TOKEN }}
+          repository: ${{ matrix.repo }}
+          event-type: ops_update
+          client_payload: '{
+            "app" : "demo",
+            "dependency" : "demo",
+            "github": "${{ tojson(github) }}"
+          }'
 
