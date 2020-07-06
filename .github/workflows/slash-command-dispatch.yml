@@ -6,17 +6,10 @@ jobs:
   slashCommandDispatch:
     runs-on: ubuntu-latest
     steps:
-      # Checkout is necessary here due to referencing a local action.
-      # It's also necessary when using the 'config-from-file' option.
-      # Otherwise, avoid using checkout to keep this workflow fast.
-      - uses: actions/checkout@v2
-
       # Basic configuration
       - name: Slash Command Dispatch
         uses: peter-evans/slash-command-dispatch@v1
         with:
-          token: ${{ secrets.PA_TOKEN }}
-          reaction-token: ${{ secrets.PA_TOKEN }}
           commands: hello-world-local, ping-local
           permission: write
           issue-type: issue
