@@ -1,0 +1,64 @@
+name: Slash Command Dispatch
+on:
+  issue_comment:
+    types: [created]
+jobs:
+  slashCommandDispatch:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout is necessary here due to referencing a local action.
+      # It's also necessary when using the 'config-from-file' option.
+      # Otherwise, avoid using checkout to keep this workflow fast.
+      - uses: actions/checkout@v2
+
+      # Basic configuration
+      - name: Slash Command Dispatch
+        uses: ./
+        with:
+          token: ${{ secrets.PA_TOKEN }}
+          reaction-token: ${{ secrets.PA_TOKEN }}
+          commands: hello-world-local, ping-local
+          permission: write
+          issue-type: issue
+
+      # Advanced JSON configuration
+      - name: Slash Command Dispatch (JSON)
+        uses: ./
+        with:
+          token: ${{ secrets.PA_TOKEN }}
+          reaction-token: ${{ secrets.PA_TOKEN }}
+          config: >
+            [
+              {
+                "command": "help",
+                "permission": "write",
+                "issue_type": "issue",
+                "repository": "{{ Target_Repo }}"
+              },
+              {
+                "command": "help",
+                "permission": "write",
+                "issue_type": "pull-request",
+                "repository": "{{ Target_Repo }}",
+                "event_type_suffix": "-pr-command"
+              },
+              {
+                "command": "hello-world",
+                "permission": "write",
+                "issue_type": "issue",
+                "repository": "{{ Target_Repo }}"
+              },
+              {
+                "command": "ping",
+                "permission": "write",
+                "issue_type": "issue",
+                "repository": "{{ Target_Repo }}"
+              },
+              {
+                "command": "rebase",
+                "permission": "admin",
+                "issue_type": "pull-request",
+                "repository": "{{ Target_Repo }}"
+              }
+            ]
+
