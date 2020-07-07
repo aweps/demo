@@ -4,8 +4,6 @@
 
 docker build -t hello-world .
 
-
-
 2. To run local container:
 
 docker run --rm -it -p 8000:1313 hello-world

@@ -1,3 +1,4 @@
+
 kind: pipeline
 name: master
 
@@ -37,4 +38,3 @@ volumes:
 trigger:
   branch:
   - master
-
