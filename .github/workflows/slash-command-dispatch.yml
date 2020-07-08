@@ -8,16 +8,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      # Basic configuration
-      - name: Slash Command Dispatch
-        uses: peter-evans/slash-command-dispatch@v1
-        with:
-          token: ${{ secrets.PA_TOKEN }}
-          reaction-token: ${{ secrets.PA_TOKEN }}
-          commands: hello-world-local, ping-local
-          permission: write
-          issue-type: issue
-
       # Advanced JSON configuration
       - name: Slash Command Dispatch (JSON)
         uses: peter-evans/slash-command-dispatch@v1
