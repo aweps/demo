@@ -5,6 +5,10 @@ on:
     types: [created]
 jobs:
   slashCommandDispatch:
+    strategy:
+      matrix:
+        repo: ["slaystack/xops","aweps/demo-ops"]
+
     runs-on: ubuntu-latest
     steps:
 
@@ -20,32 +24,32 @@ jobs:
                 "command": "help",
                 "permission": "write",
                 "issue_type": "issue",
-                "repository": "slaystack/xops,aweps/demo-ops"
+                "repository": "${{ matrix.repo }}"
               },
               {
                 "command": "help",
                 "permission": "write",
                 "issue_type": "pull-request",
-                "repository": "slaystack/xops,aweps/demo-ops",
+                "repository": "${{ matrix.repo }}",
                 "event_type_suffix": "-pr-command"
               },
               {
                 "command": "hello-world",
                 "permission": "write",
                 "issue_type": "issue",
-                "repository": "slaystack/xops,aweps/demo-ops"
+                "repository": "${{ matrix.repo }}"
               },
               {
                 "command": "ping",
                 "permission": "write",
                 "issue_type": "issue",
-                "repository": "slaystack/xops,aweps/demo-ops"
+                "repository": "${{ matrix.repo }}"
               },
               {
                 "command": "rebase",
                 "permission": "admin",
                 "issue_type": "pull-request",
-                "repository": "slaystack/xops,aweps/demo-ops"
+                "repository": "${{ matrix.repo }}"
               }
             ]
 
