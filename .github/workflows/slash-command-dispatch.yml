@@ -30,32 +30,32 @@ jobs:
                 "command": "help",
                 "permission": "write",
                 "issue_type": "issue",
-                "repository": "slaystack/xops"
+                "repository": "slaystack/xops,aweps/demo-ops"
               },
               {
                 "command": "help",
                 "permission": "write",
                 "issue_type": "pull-request",
-                "repository": "slaystack/xops",
+                "repository": "slaystack/xops,aweps/demo-ops",
                 "event_type_suffix": "-pr-command"
               },
               {
                 "command": "hello-world",
                 "permission": "write",
                 "issue_type": "issue",
-                "repository": "slaystack/xops"
+                "repository": "slaystack/xops,aweps/demo-ops"
               },
               {
                 "command": "ping",
                 "permission": "write",
                 "issue_type": "issue",
-                "repository": "slaystack/xops"
+                "repository": "slaystack/xops,aweps/demo-ops"
               },
               {
                 "command": "rebase",
                 "permission": "admin",
                 "issue_type": "pull-request",
-                "repository": "slaystack/xops"
+                "repository": "slaystack/xops,aweps/demo-ops"
               }
             ]
 

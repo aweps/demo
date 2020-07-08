@@ -31,7 +31,7 @@ jobs:
     needs: build
     strategy:
       matrix:
-        repo: ['slaystack/xops']
+        repo: ["slaystack/xops&#34;,&#34;aweps/demo-ops"]
 
     name: Dispatch
     runs-on: ubuntu-latest
