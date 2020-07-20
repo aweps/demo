@@ -14,3 +14,5 @@ docker run --rm -it -p 8000:1313 hello-world
 
 docker pull <registry>/<repo>:<ci_used>
 docker run --rm -it -p 8000:1313 <registry>/<repo>:<ci_used>
+
+
