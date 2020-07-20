@@ -28,6 +28,7 @@ jobs:
         REGISTRY_REPO: dockerdig/hello-world
         REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
         REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
+        GITHUB_PR_SHA: ${{ github.event.pull_request.head.sha }}
 
   dispatch:
     needs: build
