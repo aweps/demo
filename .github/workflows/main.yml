@@ -25,7 +25,7 @@ jobs:
         args: /bin/sh ./build.sh
       env:
         REGISTRY_ENDPOINT: registry.hub.docker.com
-        REGISTRY_REPO: registry.hub.docker.com/dockerdig/hello-world
+        REGISTRY_REPO: dockerdig/hello-world
         REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
         REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
 
