@@ -47,7 +47,16 @@ jobs:
           if [[ "${{ github.event.client_payload.github.event_name }}" == "pull_request" || "${{ github.event.client_payload.github.event_name }}" == "release" ]]; then
 
             # Create PR
-            git stash -u
+            git add -A
+            if [[ "${{ github.event.client_payload.github.event_name }}" == "pull_request" ]]; then
+
+              git commit -s -m '[ops] ${{ github.event.client_payload.github.event.pull_request.user.login }} opened PR#${{ github.event.client_payload.github.event.pull_request.number }} for ${{ github.event.client_payload.github.repository }}:${{ github.event.client_payload.github.event.pull_request.base.ref }} - ${{ github.event.client_payload.github.event.pull_request.title }}'
+
+            elif [[ "${{ github.event.client_payload.github.event_name }}" == "release" ]]; then
+
+              git commit -s -m '[ops] ${{ github.event.client_payload.github.event.release.author.login }} released ${{ github.event.client_payload.github.event.release.tag_name }} in ${{ github.event.client_payload.github.repository }} - ${{ github.event.client_payload.github.event.release.name }}'
+
+            fi
 
             REMOTE_BRANCH=app-updates
             git remote set-branches origin '*'
@@ -61,22 +70,7 @@ jobs:
               git checkout $REMOTE_BRANCH
             fi
 
-            if [[ `git stash list | wc -l` != "0" ]]; then
-              git stash apply
-            fi
-            git stash clear
-            git add -A
-
-            if [[ "${{ github.event.client_payload.github.event_name }}" == "pull_request" ]]; then
-
-              git commit -s -m '[ops] ${{ github.event.client_payload.github.event.pull_request.user.login }} opened PR#${{ github.event.client_payload.github.event.pull_request.number }} for ${{ github.event.client_payload.github.repository }}:${{ github.event.client_payload.github.event.pull_request.base.ref }} - ${{ github.event.client_payload.github.event.pull_request.title }}'
-
-            elif [[ "${{ github.event.client_payload.github.event_name }}" == "release" ]]; then
-
-              git commit -s -m '[ops] ${{ github.event.client_payload.github.event.release.author.login }} released ${{ github.event.client_payload.github.event.release.tag_name }} in ${{ github.event.client_payload.github.repository }} - ${{ github.event.client_payload.github.event.release.name }}'
-
-            fi
-
+            git merge -Xtheirs master
             while ! git push --force-with-lease origin $REMOTE_BRANCH; do
               git pull --deepen=100 -Xours origin $REMOTE_BRANCH
             done
