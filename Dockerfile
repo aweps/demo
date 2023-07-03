@@ -13,4 +13,4 @@ RUN cd /srv && hugo new site hugo && \
 COPY hello.md /srv/hugo/content/posts/hello.md
 
 WORKDIR /srv/hugo
-ENTRYPOINT ["/usr/bin/hugo","server", "--bind", "0.0.0.0"]
+ENTRYPOINT ["sh", "-c", "/usr/bin/hugo server --bind=0.0.0.0 --baseURL=$APP_BASEURL --appendPort=false --disableFastRender"]
