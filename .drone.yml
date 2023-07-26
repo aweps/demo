@@ -1,5 +1,6 @@
+---
 kind: pipeline
-name: build
+name: build_demo
 
 platform:
   os: linux
@@ -14,7 +15,8 @@ steps:
   pull: if-not-exists
   image: docker
   commands:
-  - /bin/sh ./build.drone.sh
+  - /bin/sh -c "apk update && apk add bash"
+  - /bin/bash ./ci.build.sh
   environment:
     REGISTRY_ENDPOINT: registry.hub.docker.com
     REGISTRY_REPO: dockerdig/hello-world
@@ -35,4 +37,5 @@ trigger:
   branch:
   - main
   - master
+  - hotfix/*
   - release
