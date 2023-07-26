@@ -120,3 +120,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+.cicd/
+storage/preprocessed_data.csv
