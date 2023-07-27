@@ -3,12 +3,12 @@
 1. To build local container:
 
 ```
-docker build -t hello-world .
+docker build -t demo .
 ```
 2. To run local container:
 
 ```
-docker run --rm -it -p 8000:1313 hello-world
+docker run --rm -it -p 8000:1313 demo
 ```
 3. Browse at http://<MACHINE_IP>:8000
 
