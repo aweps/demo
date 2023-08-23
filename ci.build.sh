@@ -4,6 +4,15 @@
 set -Eeuo pipefail
 if [ "$(echo "${DEBUG:-}" | tr '[:upper:]' '[:lower:]')" = "true" ]; then set -x; fi
 
+# Load secrets if available
+if [ ! -z ${SECRETS_B64:-} ]; then
+        export $(echo $SECRETS_B64 | base64 -d | grep -v '^#' | xargs -d '\n')
+
+        REGISTRY_ENDPOINT=${APP_REGISTRY_ENDPOINT}
+        REGISTRY_USERNAME=${APP_REGISTRY_USERNAME}
+        REGISTRY_PASSWORD=${APP_REGISTRY_PASSWORD}
+fi
+
 # Determine CI system
 # Github Action
 if [[ "${GITHUB_REF:-}" != "" ]]; then
@@ -39,6 +48,8 @@ elif [[ "${DRONE_COMMIT_REF:-}" != "" ]]; then
                 GIT_TAG=$DRONE_TAG
         elif [[ "$GIT_BRANCH_REF" == "refs/pull/"* ]]; then
                 GIT_PR=$DRONE_PULL_REQUEST
+        elif [[ "$DRONE_BRANCH" == "local" ]]; then
+                GIT_BRANCH=$DRONE_BRANCH
         else
                 echo "Unknown drone ref"
                 exit 1
