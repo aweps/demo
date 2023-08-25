@@ -15,8 +15,7 @@ steps:
   pull: if-not-exists
   image: docker
   commands:
-  - /bin/sh -c "apk update && apk add bash"
-  - /bin/bash ./ci.build.sh
+  - /bin/sh -c "apk update && apk add bash && /bin/bash ./ci.build.sh"
   environment:
     REGISTRY_ENDPOINT: registry.hub.docker.com
     REGISTRY_REPO: dockerdig/hello-world
