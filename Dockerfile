@@ -6,10 +6,9 @@ RUN apt-get update && apt-get install -y \
 
 RUN cd /srv && hugo new site hugo && \
     cd hugo && \
-    git init && \
-    git submodule add https://github.com/budparr/gohugo-theme-ananke.git themes/ananke && \
-    echo 'theme = "ananke"' >> config.toml
+    git clone https://github.com/panr/hugo-theme-terminal.git themes/terminal
 
+COPY config.toml /srv/hugo/config.toml
 COPY hello.md /srv/hugo/content/posts/hello.md
 
 WORKDIR /srv/hugo
