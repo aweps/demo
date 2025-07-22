@@ -1,20 +1,30 @@
-### Run commands:-
+# demo
 
-1. To build local container:
+## Run Commands
 
-```
-docker build -t demo .
-```
-2. To run local container:
+### Local Development
 
-```
-docker run --rm -it -p 8000:1313 demo
-```
-3. Browse at http://<MACHINE_IP>:8000
+1. **Build the local container:**
+   ```bash
+   docker build -t demo .
+   ```
 
-4. If using CI (drone/circleci/github), run container from shared registry & then browse:
+2. **Run the local container:**
+   ```bash
+   docker run --rm -it -p 8000:1313 demo
+   ```
 
-```
-docker pull registry.hub.docker.com/dockerdig/hello-world:<ci_used>
-docker run --rm -it -p 8000:1313 registry.hub.docker.com/dockerdig/hello-world:<ci_used>
-```
+3. **Access the application:**
+   Browse at `http://<MACHINE_IP>:8000`
+
+### CI/CD (Drone/CircleCI/GitHub)
+
+1. **Pull the container from the shared registry:**
+   ```bash
+   docker pull registry.hub.docker.com/dockerdig/hello-world:<ci_used>
+   ```
+
+2. **Run the container:**
+   ```bash
+   docker run --rm -it -p 8000:1313 registry.hub.docker.com/dockerdig/hello-world:<ci_used>
+   ```
