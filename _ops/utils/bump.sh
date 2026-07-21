@@ -49,7 +49,12 @@ if [ -f pubspec.yaml ]; then
 
 # For generic repos
 else
-	version=$(echo `git rev-list --tags --max-count=100` | tr " " "\n" | tail -n1 | xargs git tag --contains | grep -o '[0-9]\+\.[0-9]*\.\?[0-9]*' | sort -rV | head -n1 || :)
+	# Monorepo app repos tag <app>/<module>/... -- scope the version scan to
+	# THIS app's tags so a sibling app's release never inflates our next
+	# version. Standalone (module-first PREFIX) repos keep the repo-wide scan.
+	TAG_SCOPE="${PREFIX%/}"
+	if [[ "$TAG_SCOPE" == */* ]]; then TAG_SCOPE="${TAG_SCOPE%%/*}/"; else TAG_SCOPE=""; fi
+	version=$(echo `git rev-list --tags --max-count=100` | tr " " "\n" | tail -n1 | xargs git tag --contains | grep "^${TAG_SCOPE}" | grep -o '[0-9]\+\.[0-9]*\.\?[0-9]*' | sort -rV | head -n1 || :)
 	if [[ "$version" == "" ]]; then
 		version=0.0.0
 	fi
